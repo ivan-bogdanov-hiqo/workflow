@@ -1,4 +1,5 @@
 $developmentBranch = 'development'
+$path = "$HOME/development"
 
 enum Branches {
     feature
@@ -13,6 +14,43 @@ function Check-GitPath {
 
     if(!(Test-Path -Path "$path/.git")){
         Write-Error $"Invalid path ($path). This is path no git repository." -ErrorAction Stop
+    }
+}
+
+function Get-GitRepositoryInfo {
+    param (
+        [Parameter(Mandatory=$true)]
+        [string]$path
+    )
+    
+    Check-GitPath $path
+
+    [string]$urlRow = Get-Content "$path/.git/config" | Select-String "url"
+
+    $url = $urlRow.SubString($urlRow.LastIndexOf(' ')).Trim()
+    
+    $urlElements = $url.Split('/')
+
+    $branches = @{}
+
+    git -C $path branch | ForEach-Object{
+            
+        $branch = $_.Trim()
+
+        if($branch[0] -eq '*'){
+            $branches.Add($branch.Substring(2, $branch.Length - 2), $true)
+        }
+        else{
+            $branches.Add($branch, $false)
+        }
+    }
+
+    @{
+        path = $path
+        host = $urlElements[2]
+        owner = $urlElements[3]
+        name = $urlElements[4].Substring(0, $urlElements[4].IndexOf('.'))
+        branches = $branches
     }
 }
 
@@ -90,3 +128,4 @@ function Push-Branch {
 
 Export-ModuleMember New-Feature
 Export-ModuleMember Push-Branch
+Export-ModuleMember Get-GitRepositoryInfo
