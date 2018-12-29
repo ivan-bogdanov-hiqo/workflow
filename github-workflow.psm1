@@ -33,7 +33,7 @@ function Complete-Task {
         try {
             Push-Branch -path $path -comment $comment
 
-            Pull-GitHub -uri $uri -head $head -base $developmentBranch -comment $comment
+            Request-PullGitHub -uri $uri -head $head -base $developmentBranch -comment $comment
         }
         catch {
             $Error[0]

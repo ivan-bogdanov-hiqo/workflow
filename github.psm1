@@ -3,7 +3,7 @@
 $token = ""
 $tokenHeader = @{ "Authorization"= "token $token" }
 
-function Pull-GitHub {
+function Request-PullGitHub {
     param (
         [Parameter(Mandatory=$true)]
         [string]$uri,
@@ -24,4 +24,4 @@ function Pull-GitHub {
     Invoke-WebRequest -Uri $uri -ContentType 'application/json' -Method Post -Headers $tokenHeader -Body $body
 }
 
-Export-ModuleMember Pull-GitHub
+Export-ModuleMember Request-PullGitHub
