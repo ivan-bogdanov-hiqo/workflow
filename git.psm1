@@ -68,9 +68,9 @@ function New-Branch {
 
     Check-GitPath $path
     
-    git $path checkout $baseBranch
-    git $path pull
-    git $path checkout -b "$type/$name"
+    git -C $path checkout $baseBranch
+    git -C $path pull
+    git -C $path checkout -b "$type/$name"
 }
 
 function New-Feature {
@@ -90,7 +90,7 @@ function Push-Branch {
     
     Check-GitPath $path
 
-    git status -b --short
+    git -C $path status -b --short
 
     Write-Host -ForegroundColor Green "Press key [Enter] to continue..."
 
