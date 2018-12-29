@@ -38,10 +38,12 @@ function Pull-GitHub {
 function Pull-GitHubDevelopment {
     param (
         [Parameter(Mandatory=$true)]
-        [string]$head,
-        [Parameter(Mandatory=$true)]
         [string]$comment
     )
+    
+    $head = (Get-GitRepositoryInfo (Get-Location)).branches.GetEnumerator() | Where-Object {
+        $_.value -eq $true
+    } | Select-Object -ExpandProperty Name
     
     Pull-GitHub -head $head -base $developmentBranch -comment $comment
 }

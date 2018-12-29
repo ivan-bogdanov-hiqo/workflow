@@ -31,11 +31,26 @@ function Get-GitRepositoryInfo {
     
     $urlElements = $url.Split('/')
 
+    $branches = @{}
+
+    git -C $path branch | ForEach-Object{
+            
+        $branch = $_.Trim()
+
+        if($branch[0] -eq '*'){
+            $branches.Add($branch.Substring(2, $branch.Length - 2), $true)
+        }
+        else{
+            $branches.Add($branch, $false)
+        }
+    }
+
     @{
         path = $path
         host = $urlElements[2]
         owner = $urlElements[3]
         name = $urlElements[4].Substring(0, $urlElements[4].IndexOf('.'))
+        branches = $branches
     }
 }
 
