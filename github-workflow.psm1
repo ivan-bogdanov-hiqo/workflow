@@ -1,7 +1,7 @@
 Import-Module "C:\Program Files\WindowsPowerShell\Modules\github\github.psm1"
 Import-Module "C:\Program Files\WindowsPowerShell\Modules\git\git.psm1"
+Import-Module "C:\Program Files\WindowsPowerShell\Modules\settings-project\settings-project.psm1"
 
-$developmentBranch = 'development'
 function Complete-Task {
 
     $path = (Get-Location)
@@ -33,7 +33,7 @@ function Complete-Task {
         try {
             Push-Branch -path $path -comment $comment
 
-            Request-PullGitHub -uri $uri -head $head -base $developmentBranch -comment $comment
+            Request-PullGitHub -uri $uri -head $head -base (Get-ProjectSetting).developmentBranchName -comment $comment
         }
         catch {
             $Error[0]
