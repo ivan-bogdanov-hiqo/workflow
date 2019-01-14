@@ -1,4 +1,4 @@
-$developmentBranch = 'development'
+Import-Module "C:\Program Files\WindowsPowerShell\Modules\settings-project\settings-project.psm1"
 
 enum Branches {
     feature
@@ -79,7 +79,7 @@ function New-Feature {
         [string]$path = (Get-Location)
     )
 
-    New-Branch -baseBranch $developmentBranch -type ([Branches]::feature) -name $name -Path $path
+    New-Branch -baseBranch (Get-ProjectSetting).developmentBranchName -type ([Branches]::feature) -name $name -Path $path
 }
 
 function Push-Branch {
@@ -100,11 +100,11 @@ function Push-Branch {
         Write-Error "Local branch [$currentBranch] not modified." -ErrorAction Stop
     }
         
-    git -C $path checkout $developmentBranch
+    git -C $path checkout (Get-ProjectSetting).developmentBranchName
     git -C $path pull
 
     git -C $path checkout $currentBranch
-    $status = git -C $path merge $developmentBranch
+    $status = git -C $path merge (Get-ProjectSetting).developmentBranchName
 
     if($status -like '*CONFLICT*'){
         Write-Error $status -ErrorAction Stop
@@ -118,3 +118,4 @@ function Push-Branch {
 Export-ModuleMember New-Feature
 Export-ModuleMember Push-Branch
 Export-ModuleMember Get-GitRepositoryInfo
+Export-ModuleMember Check-GitPath
