@@ -1,4 +1,3 @@
-Import-Module "C:\Program Files\WindowsPowerShell\Modules\git\git.psm1"
 function Initialize-Project {
     param (
         [string]$path = (Get-Location)
