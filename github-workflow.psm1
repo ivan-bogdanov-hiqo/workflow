@@ -1,7 +1,3 @@
-Import-Module "C:\Program Files\WindowsPowerShell\Modules\github\github.psm1"
-Import-Module "C:\Program Files\WindowsPowerShell\Modules\git\git.psm1"
-Import-Module "C:\Program Files\WindowsPowerShell\Modules\settings-project\settings-project.psm1"
-
 function Complete-Task {
 
     $path = (Get-Location)

@@ -1,5 +1,3 @@
-Import-Module "C:\Program Files\WindowsPowerShell\Modules\settings-project\settings-project.psm1"
-
 enum Branches {
     feature
     bugfix
